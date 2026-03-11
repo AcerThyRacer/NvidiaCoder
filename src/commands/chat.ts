@@ -30,7 +30,7 @@ export async function chat(modelId: string, systemMessage?: string): Promise<voi
   }
 
   console.log(chalk.green('\n╔════════════════════════════════════════════════════════╗'));
-  console.log(chalk.green('║') + chalk.bold('  NVIDIA Chat Interface') + chalk.green('║'));
+  console.log(chalk.green('║') + chalk.bold('  NVIDIA Chat Interface') + chalk.green(''.padEnd(33)) + chalk.green('║'));
   console.log(chalk.green('╚════════════════════════════════════════════════════════╝'));
   console.log(`\nModel: ${chalk.cyan(model.name)} (${model.parameters || 'N/A'})`);
   console.log(chalk.gray('─'.repeat(60)));

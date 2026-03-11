@@ -153,7 +153,8 @@ export class NVIDIAAPIClient {
     models?: string[];
   }> {
     try {
-      const response = await this.client.get('/health/ready');
+      // Use /models endpoint to verify health and authentication
+      await this.client.get<{ data: Array<{ id: string }> }>('/models');
       return {
         status: 'healthy',
       };
