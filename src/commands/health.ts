@@ -10,7 +10,7 @@ import { totalNvidiaModels } from '../models/nvidia-models';
 
 export async function health(): Promise<void> {
   console.log(chalk.green('\n╔════════════════════════════════════════════════════════╗'));
-  console.log(chalk.green('║') + chalk.bold('  NVIDIA NIM Health Check') + chalk.green('║'));
+  console.log(chalk.green('║') + chalk.bold('  NVIDIA NIM Health Check') + chalk.green(''.padEnd(31)) + chalk.green('║'));
   console.log(chalk.green('╚════════════════════════════════════════════════════════╝'));
   console.log();
 
@@ -40,18 +40,18 @@ export async function health(): Promise<void> {
     try {
       const models = await apiClient.listModels();
       modelsSpinner.succeed(`Models available: ${models.length} models`);
-      
-      console.log(chalk.gray('\n') + '─'.repeat(60));
-      console.log(chalk.cyan('System Status:'));
-      console.log(`  NVIDIA NIM API: ${chalk.green('Operational')}`);
-      console.log(`  Total NVIDIA Models: ${chalk.bold(totalNvidiaModels.toString())}`);
-      console.log(`  API Endpoint: ${chalk.gray('https://integrate.api.nvidia.com/v1/')}`);
-      console.log();
     } catch (error) {
       modelsSpinner.fail('Failed to fetch models');
       console.log(chalk.yellow(`  ${(error as Error).message}`));
-      console.log();
     }
+
+    console.log();
+    console.log(chalk.gray('─'.repeat(60)));
+    console.log(chalk.cyan('System Status:'));
+    console.log(`  NVIDIA NIM API: ${chalk.green('Operational')}`);
+    console.log(`  Total NVIDIA Models: ${chalk.bold(totalNvidiaModels.toString())}`);
+    console.log(`  API Endpoint: ${chalk.gray('https://integrate.api.nvidia.com/v1/')}`);
+    console.log();
   } catch (error) {
     spinner.fail('API connectivity: Failed');
     console.log(chalk.red(`\nError: ${(error as Error).message}\n`));
