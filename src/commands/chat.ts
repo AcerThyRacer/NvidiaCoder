@@ -68,17 +68,16 @@ export async function chat(modelId: string, systemMessage?: string): Promise<voi
         return;
       }
 
-      messages.push({
-        role: 'user',
-        content: userInput.trim()
-      });
-
+      const userMessage = userInput.trim();
       const spinner = ora('Thinking...').start();
 
       try {
+        // Only add user message to history after successful API call
+        const tempMessages: ChatMessage[] = [...messages, { role: 'user', content: userMessage }];
+        
         const response = await apiClient.chatCompletion({
           model: model.id,
-          messages,
+          messages: tempMessages,
           temperature: 0.7,
           max_tokens: 1024
         });
@@ -86,15 +85,15 @@ export async function chat(modelId: string, systemMessage?: string): Promise<voi
         spinner.stop();
 
         const assistantMessage = response.choices[0].message.content;
-        messages.push({
-          role: 'assistant',
-          content: assistantMessage
-        });
+        // Commit both messages to history only on success
+        messages.push({ role: 'user', content: userMessage });
+        messages.push({ role: 'assistant', content: assistantMessage });
 
         console.log(`\n${chalk.cyan('Assistant:')} ${assistantMessage}`);
       } catch (error) {
         spinner.stop();
         console.log(chalk.red(`\nError: ${(error as Error).message}\n`));
+        // User message was never added to history, so conversation remains clean
       }
 
       chat();

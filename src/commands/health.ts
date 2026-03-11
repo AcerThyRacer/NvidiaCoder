@@ -41,7 +41,7 @@ export async function health(): Promise<void> {
       const models = await apiClient.listModels();
       modelsSpinner.succeed(`Models available: ${models.length} models`);
       
-      console.log(chalk.gray('\n─'.repeat(60)));
+      console.log(chalk.gray('\n') + '─'.repeat(60));
       console.log(chalk.cyan('System Status:'));
       console.log(`  NVIDIA NIM API: ${chalk.green('Operational')}`);
       console.log(`  Total NVIDIA Models: ${chalk.bold(totalNvidiaModels.toString())}`);
